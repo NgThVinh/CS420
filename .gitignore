@@ -1,0 +1,6 @@
+__pycache__
+.venv38
+.venv
+model/*
+!model/yolov8n-face.pt
+!model/CustomEmbedingModel.keras
