@@ -1,6 +1,14 @@
+<<<<<<< HEAD
 __pycache__
 .venv38
 .venv
 model/*
 !model/yolov8n-face.pt
+=======
+__pycache__
+.venv38
+.venv
+model/*
+!model/yolov8n-face.pt
+>>>>>>> d34ff80 (init files and folder)
 !model/CustomEmbedingModel.keras
