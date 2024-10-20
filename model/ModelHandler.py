@@ -78,8 +78,7 @@ class EmbeddingModel:
             return DeepFace.represent(
                 model_name=self.model.__name__,
                 detector_backend='skip',
-                enforce_detection=False,
-                silent=True
+                enforce_detection=False
                 )
         else:
             print("Invalid model")
