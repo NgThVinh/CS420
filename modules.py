@@ -54,10 +54,14 @@ def get_query_embedding_vector(detection_model, embedding_model, image) -> np.ar
     return embedding_vector
 
 def cosine_similarity(embedding_1, embedding_2):
+    embedding_1 = np.array(embedding_1).reshape(1, -1)
+    embedding_2 = np.array(embedding_2).reshape(1, -1)
     cosine_similarity = np.dot(embedding_1, embedding_2.T) / (np.linalg.norm(embedding_1) * np.linalg.norm(embedding_2))
     return cosine_similarity[0][0]
 
 def euclidean_similarity(embedding_1, embedding_2):
+    embedding_1 = np.array(embedding_1)
+    embedding_2 = np.array(embedding_2)
     return np.linalg.norm(embedding_1 - embedding_2)
 
 @timeit(text='Time to detect people: ')

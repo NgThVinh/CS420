@@ -64,24 +64,25 @@ class EmbeddingModel:
             self.model.__name__ = model_name
             self.model.__threshold__ = 0.3
             
-    def get_embedding(self, image) -> np.array:
+    def get_embedding(self, image) -> list:
         """
         Args:
             image (np.array): image to get embedding from
             
         Returns:
-            np.array: embedding vector
+            list: embedding vector
         """
         if self.model.__name__ == "Custom":
             return CustomEmbedding.extract_feature(image)
         elif self.model.__name__ in ["ArcFace", "Facenet512"]:
             return DeepFace.represent(
+                img_path=image,
                 model_name=self.model.__name__,
                 detector_backend='skip',
                 enforce_detection=False
-                )
+                )[0]['embedding']
         else:
             print("Invalid model")
-            return np.array([])
+            return []
         
     

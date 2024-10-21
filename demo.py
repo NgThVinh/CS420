@@ -1,6 +1,5 @@
 import cv2
 import numpy as np
-import time
 from modules import load_video_to_array, save_video_from_array, load_image, detect_people_from_frames
 from utils import remove_duplicate
 
