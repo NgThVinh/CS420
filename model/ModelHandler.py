@@ -163,8 +163,9 @@ class EmbeddingModel:
         if self.model.__name__ == "Custom":
             return CustomEmbedding.extract_feature(image)
         else:
+            input_img = image
             if not batch:
-                input_img = np.expand_dims(image, axis=0) # make it 4-dimensional how ML models expect
+                input_img = np.expand_dims(input_img, axis=0) # make it 4-dimensional how ML models expect
             if preprocess_input:
                 input_img = np.array([self.preprocess_input(img) for img in input_img])
             if batch:
