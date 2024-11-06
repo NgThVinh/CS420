@@ -9,7 +9,7 @@ from utils import timeit
 
 @timeit(text='Time to load video: ')
 def load_video_to_array(VIDEO_PATH):
-    min_height, min_width = 512, 512
+    min_height, min_width = 256, 256
     original_height, original_width = None, None
     cap = cv2.VideoCapture(VIDEO_PATH)
     all_frames = []
@@ -21,7 +21,7 @@ def load_video_to_array(VIDEO_PATH):
             original_height, original_width = frame.shape[:2]
         h_ratio = min_height / original_height
         w_ratio = min_width / original_width
-        resize_ratio = min(h_ratio, w_ratio)
+        resize_ratio = max(h_ratio, w_ratio)
         
         new_height = int(original_height * resize_ratio)
         new_width = int(original_width * resize_ratio)
