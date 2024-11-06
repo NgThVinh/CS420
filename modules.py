@@ -18,7 +18,7 @@ def load_video_to_array(VIDEO_PATH):
         if ret == False:
             break
         if not original_height or not original_width:
-            original_height, original_width = frame.shape[1:3]
+            original_height, original_width = frame.shape[:2]
         h_ratio = min_height / original_height
         w_ratio = min_width / original_width
         resize_ratio = min(h_ratio, w_ratio)
