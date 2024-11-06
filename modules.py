@@ -9,13 +9,24 @@ from utils import timeit
 
 @timeit(text='Time to load video: ')
 def load_video_to_array(VIDEO_PATH):
+    min_height, min_width = 512, 512
+    original_height, original_width = None, None
     cap = cv2.VideoCapture(VIDEO_PATH)
     all_frames = []
     while True:
         ret, frame = cap.read()   
         if ret == False:
             break
-        all_frames.append(frame)
+        if not original_height or not original_width:
+            original_height, original_width = frame.shape[1:3]
+        h_ratio = min_height / original_height
+        w_ratio = min_width / original_width
+        resize_ratio = min(h_ratio, w_ratio)
+        
+        new_height = int(original_height * resize_ratio)
+        new_width = int(original_width * resize_ratio)
+        resized_frame = cv2.resize(frame, (new_width, new_height), interpolation=cv2.INTER_LINEAR)
+        all_frames.append(resized_frame)
     return np.array(all_frames)
 
 @timeit(text='Time to save video: ')

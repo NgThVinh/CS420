@@ -2,6 +2,7 @@ from imagededup.methods import PHash, AHash, DHash, WHash, CNN
 
 from functools import wraps
 import time
+from tqdm import tqdm
 
 
 VALID_METHODS = {'PHash': PHash, 
@@ -41,9 +42,8 @@ def get_duplicate_map(frames, method, max_distance_threshold=10) -> dict:
     
     hasher = VALID_METHODS[method]()
     encodings = {}
-    for frame_idx, frame in enumerate(frames):
+    for frame_idx, frame in tqdm(enumerate(frames)):
         encodings.update({str(frame_idx): hasher.encode_image(image_array=frame)})
-        frame_idx+=1
     duplicates = hasher.find_duplicates(encoding_map=encodings, max_distance_threshold=max_distance_threshold)
     return duplicates
 
