@@ -72,5 +72,5 @@ if __name__ == '__main__':
     parser.add_argument("--batch_size", type=int, default=128, help="Batch size for processing frames")
 
     args = parser.parse_args()
-    main(args.query_image_paths, args.video_path, args.embedding_model, args.detection_model, 
+    main(args.query_image_paths, args.video_path, args.embedding_model, args.detection_model, args.hash_method, 
          args.threshold, args.distance_metric, args.batch_size)
