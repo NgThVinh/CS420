@@ -5,7 +5,7 @@ from utils import remove_duplicate
 import argparse
 
 def main(query_image_paths, video_path, embedding_model, detection_model, 
-         threshold=None, distance_metric="cosine", batch_size=128):
+         hash_method = "PHash", threshold=None, distance_metric="cosine", batch_size=128):
     
     print("Loading Images...")
     query_images = load_image(query_image_paths)
@@ -16,9 +16,9 @@ def main(query_image_paths, video_path, embedding_model, detection_model,
     print("Total Frame:", video_array.shape)
 
     print("Optimizing data...")
-    method = "PHash"
-    unique_frames, duplicates_map = remove_duplicate(video_array, method)
-    print(f"Removed duplication using {method}. \nUnique Frame:", len(unique_frames))
+    
+    unique_frames, duplicates_map = remove_duplicate(video_array, hash_method)
+    print(f"Removed duplication using {hash_method}. \nUnique Frame:", len(unique_frames))
 
     print(f"Detecting faces using {embedding_model} and {detection_model} with {distance_metric} distance metric...")
     matched_map = get_matched_map(
@@ -66,6 +66,7 @@ if __name__ == '__main__':
     parser.add_argument("--video_path", required=True, help="Path to the video file")
     parser.add_argument("--embedding_model", default="ArcFace", help="Embedding model name")
     parser.add_argument("--detection_model", default="retinaface", help="Detection model name")
+    parser.add_argument("--hash_method", default="PHash", help="Hash method for removing duplication")
     parser.add_argument("--threshold", type=float, default=None, help="Matching threshold")
     parser.add_argument("--distance_metric", default="cosine", help="Distance metric (cosine, euclidean, etc.)")
     parser.add_argument("--batch_size", type=int, default=128, help="Batch size for processing frames")
