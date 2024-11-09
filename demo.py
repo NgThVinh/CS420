@@ -5,7 +5,7 @@ from utils import remove_duplicate
 import argparse
 
 def main(query_image_paths, video_path, embedding_model, detection_model, 
-         hash_method = "PHash", threshold=None, distance_metric="cosine", batch_size=128):
+         hash_method="PHash", threshold=None, distance_metric="cosine", batch_size=128):
     
     print("Loading Images...")
     query_images = load_image(query_image_paths)
@@ -13,7 +13,7 @@ def main(query_image_paths, video_path, embedding_model, detection_model,
 
     print("Loading Video...")
     video_array = load_video_to_array(video_path)
-    print("Total Frame:", video_array.shape)
+    print("Video shape:", video_array.shape)
 
     print("Optimizing data...")
     
@@ -43,20 +43,30 @@ def main(query_image_paths, video_path, embedding_model, detection_model,
     print("Reconstructed map to match original video. \nTotal matched frames:", 
           matched_frame[matched_frame == 1].shape[0])
     
-    print("Creating video...") 
-    output_path = 'data/output.avi'
-    output_video = []
-    for idx, frame in enumerate(video_array):
+    print("Creating and saving video...")
+    output_path = "data/output.avi" 
+    cap = cv2.VideoCapture(video_path)
+    output_shape = (int(cap.get(cv2.CAP_PROP_FRAME_COUNT)), 
+                    int(cap.get(cv2.CAP_PROP_FRAME_HEIGHT)), 
+                    int(cap.get(cv2.CAP_PROP_FRAME_WIDTH)), 
+                    3)
+    out = cv2.VideoWriter(output_path, 
+                          cv2.VideoWriter_fourcc(*'XVID'), 
+                          cap.get(cv2.CAP_PROP_FPS),
+                          (output_shape[2], output_shape[1])
+                          )
+    for idx in range(output_shape[0]):
+        _, frame = cap.read()
         if matched_frame[idx] == 1:
-            frame = cv2.putText(frame, "Matched", (10, 30), 
-                                cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 255, 0), 2, 
-                                cv2.LINE_AA)
-        output_video.append(frame)
-    output_video = np.array(output_video)
-    print("Output video shape:", output_video.shape)
+            frame = cv2.putText(frame, "Matched", (10, 30),
+                                    cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 255, 0), 2, 
+                                    cv2.LINE_AA)
+        out.write(frame)
+    cap.release()
+    out.release()
 
-    print("Saving video...")
-    save_video_from_array(output_video, output_path)
+    print("Output video shape:", output_shape)
+    # save_video_from_array(output_video, output_path)
     print("Output video saved at:", output_path)
 
 
