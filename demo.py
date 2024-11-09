@@ -46,7 +46,7 @@ def main(query_image_paths, video_path, embedding_model, detection_model,
     print("Creating and saving video...")
     output_path = "data/output.avi" 
     cap = cv2.VideoCapture(video_path)
-    output_shape = (int(cap.get(cv2.CAP_PROP_FRAME_COUNT)), 
+    output_shape = (len(video_array), 
                     int(cap.get(cv2.CAP_PROP_FRAME_HEIGHT)), 
                     int(cap.get(cv2.CAP_PROP_FRAME_WIDTH)), 
                     3)
@@ -55,12 +55,13 @@ def main(query_image_paths, video_path, embedding_model, detection_model,
                           cap.get(cv2.CAP_PROP_FPS),
                           (output_shape[2], output_shape[1])
                           )
+    print(matched_frame.shape, output_shape[0])
     for idx in range(output_shape[0]):
         _, frame = cap.read()
         if matched_frame[idx] == 1:
             frame = cv2.putText(frame, "Matched", (10, 30),
-                                    cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 255, 0), 2, 
-                                    cv2.LINE_AA)
+                                cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 255, 0), 2, 
+                                cv2.LINE_AA)
         out.write(frame)
     cap.release()
     out.release()
