@@ -55,7 +55,6 @@ def main(query_image_paths, video_path, embedding_model, detection_model,
                           cap.get(cv2.CAP_PROP_FPS),
                           (output_shape[2], output_shape[1])
                           )
-    print(matched_frame.shape, output_shape[0])
     for idx in range(output_shape[0]):
         _, frame = cap.read()
         if matched_frame[idx] == 1:
