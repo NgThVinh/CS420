@@ -125,9 +125,10 @@ class DetectionModel:
     
 class EmbeddingModel:
     def __init__(self, name: str):
-        self.__valid_name__ = ["Custom", "ArcFace", "Facenet512", "VGG-Face", 
-                               "Facenet", "OpenFace", "DeepFace", "DeepID", 
-                               "Dlib", "SFace", "GhostFaceNet"]
+        self.__valid_name__ = ["Custom", "VGG-Face", "Facenet", "Facenet512",
+                               "OpenFace", "DeepFace", "DeepID", "Dlib", "ArcFace", 
+                               "SFace", "GhostFaceNet"]
+        self.model = None
         self.input_shape = None
         self.get_model(name)
         
