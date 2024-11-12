@@ -168,6 +168,7 @@ def get_matched_map(frames, query_images, model_name, detector_backend,
         faces = detection_model(query, align=True)
         if len(faces) != 1:  # Ensure single face per query
             print("No face or more than 1 face detected in query image!")
+            continue
         query_image, _ = faces[0]
         q_embedding = embedding_model.get_embedding(query_image)
         q_embeddings.append(q_embedding)
