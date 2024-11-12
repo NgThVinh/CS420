@@ -102,8 +102,8 @@ def normalize_input(img: np.ndarray, normalization: str = "base") -> np.ndarray:
 
 class DetectionModel:
     def __init__(self, name: str):
-        self.__valid_name__ = ['opencv', 'retinaface', 'mtcnn', 'ssd', 
-                               'dlib', 'mediapipe', 'yolov8', 'centerface']
+        self.__valid_name__ = ['opencv', 'retinaface', 'mtcnn', 'fastmtcnn', 'ssd', 
+                               'dlib', 'mediapipe', 'yolov8', 'centerface', 'yunet']
         self.get_model(name)
         
     def get_model(self, model_name) -> None:
