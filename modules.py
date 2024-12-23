@@ -161,9 +161,16 @@ def get_matched_map(frames, query_images, model_name, detector_backend,
     # Process and extract embeddings from query images
     q_embeddings = []
     embedding_model = EmbeddingModel(model_name)
+    if embedding_model.model is None:
+        print("Invalid model name. Choose one of:", embedding_model.__valid_name__)
+        return matched_map
     
     # Detect faces and preprocess for each frame
     detection_model = DetectionModel(detector_backend)
+    if detection_model.model is None:
+        print("Invalid detector backend. Choose one of:", detection_model.__valid_name__)
+        return matched_map
+
     for query in query_images:
         faces = detection_model(query, align=True)
         if len(faces) != 1:  # Ensure single face per query

@@ -112,13 +112,15 @@ class DetectionModel:
     def __init__(self, name: str):
         self.__valid_name__ = ['opencv', 'retinaface', 'mtcnn', 'fastmtcnn', 'ssd', 
                                'dlib', 'mediapipe', 'yolov8', 'centerface', 'yunet']
+        self.__name__ = None
+        self.model = None
         self.get_model(name)
         
     def get_model(self, model_name) -> None:
         if model_name not in self.__valid_name__:
             print(f"Invalid model name: {model_name}")
             return
-        self.__name__ = model_name
+        self.__name__ = self.model = model_name
     
     def __call__(self, image, align=True) -> list:
         if not self.__name__:
