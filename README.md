@@ -16,7 +16,7 @@ pip install -r requirements.txt
 # Example Command
 
 ```
-python video_face_detection.py --query_image_paths path/to/image1.jpg path/to/image2.jpg \
+python demo.py --query_image_paths path/to/image1.jpg path/to/image2.jpg \
     --video_path path/to/video.mp4 \
     --embedding_model ArcFace \
     --detection_model retinaface \
