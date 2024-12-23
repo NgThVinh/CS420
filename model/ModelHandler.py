@@ -97,7 +97,7 @@ def normalize_input(img: np.ndarray, normalization: str = "base") -> np.ndarray:
         img /= 128
 
     elif normalization == "SFace":
-        return img
+        return img.astype(np.uint8)
     
     elif normalization == "Dlib":
         img = img.astype(np.uint8)
