@@ -75,6 +75,7 @@ def remove_duplicate(video_array, method="PHash", max_distance_threshold=10):
     def get_label_from_path(path):
         with open(path, 'r') as f:
             data = json.load(f)
-            labels = [1 for label in data.values()['labels'] if label[0] == 'target' else 0]
+            # print(list(data.values())[0])
+            labels = [1 if label['labels'][0] == 'Target' else 0 for label in data.values()]
         return labels
     
