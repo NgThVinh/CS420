@@ -50,6 +50,7 @@ def load_image(path: str|list, is_url: bool=False):
 
 def check_distance(distances, threshold):
     confidence = np.average(distances)
+    print(confidence, threshold)
     return confidence <= threshold
 
 def __flatten_list__(nested_list):
