@@ -3,6 +3,7 @@ from imagededup.methods import PHash, AHash, DHash, WHash, CNN
 from functools import wraps
 import time
 from tqdm import tqdm
+import json
 
 
 VALID_METHODS = {'PHash': PHash, 
@@ -70,3 +71,11 @@ def remove_duplicate(video_array, method="PHash", max_distance_threshold=10):
             except:
                 pass
     return unique_frames, duplicates
+
+    def get_label_from_path(path):
+        with open(path, 'r') as f:
+            data = json.load(f)
+            # print(list(data.values())[0])
+            labels = [1 if label['labels'][0] == 'Target' else 0 for label in data.values()]
+        return labels
+    

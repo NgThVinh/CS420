@@ -95,6 +95,14 @@ def normalize_input(img: np.ndarray, normalization: str = "base") -> np.ndarray:
         # by subtracting 127.5 then divided by 128.
         img -= 127.5
         img /= 128
+
+    elif normalization == "SFace":
+        return img.astype(np.uint8)
+    
+    elif normalization == "Dlib":
+        img = img.astype(np.uint8)
+        return img[:, :, ::-1]  # bgr to rgb
+
     else:
         img = (img / 255.0).astype(np.float32)
 
@@ -102,8 +110,8 @@ def normalize_input(img: np.ndarray, normalization: str = "base") -> np.ndarray:
 
 class DetectionModel:
     def __init__(self, name: str):
-        self.__valid_name__ = ['opencv', 'retinaface', 'mtcnn', 'ssd', 
-                               'dlib', 'mediapipe', 'yolov8', 'centerface']
+        self.__valid_name__ = ['opencv', 'retinaface', 'mtcnn', 'fastmtcnn', 'ssd', 
+                               'dlib', 'mediapipe', 'yolov8', 'centerface', 'yunet']
         self.get_model(name)
         
     def get_model(self, model_name) -> None:
@@ -125,9 +133,10 @@ class DetectionModel:
     
 class EmbeddingModel:
     def __init__(self, name: str):
-        self.__valid_name__ = ["Custom", "ArcFace", "Facenet512", "VGG-Face", 
-                               "Facenet", "OpenFace", "DeepFace", "DeepID", 
-                               "Dlib", "SFace", "GhostFaceNet"]
+        self.__valid_name__ = ["Custom", "VGG-Face", "Facenet", "Facenet512",
+                               "OpenFace", "DeepFace", "DeepID", "Dlib", "ArcFace", 
+                               "SFace", "GhostFaceNet"]
+        self.model = None
         self.input_shape = None
         self.get_model(name)
         
@@ -143,6 +152,7 @@ class EmbeddingModel:
                 task="facial_recognition", 
                 model_name=model_name
             )
+            self.model_client = model_client
             self.model = model_client.model
             self.input_shape = model_client.input_shape
             self.model.__name__ = model_name
@@ -169,8 +179,15 @@ class EmbeddingModel:
             if preprocess_input:
                 input_img = np.array([self.preprocess_input(img) for img in input_img])
             if batch:
+                if self.model.__name__ == 'SFace':
+                    embeddings = self.model.model.feature(input_img)
+                    return embeddings[0].tolist()
+                if self.model.__name__ == 'Dlib':
+                    img_representation = self.model.model.compute_face_descriptor(input_img)
+                    img_representation = np.array(img_representation)
+                    return img_representation.tolist()
                 return self.model(input_img, training=False).numpy().tolist()
-            return self.model(input_img, training=False).numpy()[0].tolist()
+            return self.model_client.forward(input_img)
 
         
     
